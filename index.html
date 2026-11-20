@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fireside – a self-hosted tracker for Old School RuneScape</title>
+    <meta
+      name="description"
+      content="Fireside is a self-hosted Old School RuneScape tracker: a RuneLite plugin collects your own data and sends it to a dashboard on a server you run yourself."
+    />
+    <meta name="theme-color" content="#14110f" />
+    <meta name="color-scheme" content="dark" />
+    <meta property="og:title" content="Fireside" />
+    <meta
+      property="og:description"
+      content="A self-hosted Old School RuneScape tracker: a RuneLite plugin and a dashboard on your own server."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <!--
+      LINKS: the URLs live in one place, the constants at the top of script.js.
+      Elements with data-link="server|plugin|docs|tunnel|pluginHub" get their
+      href from there. The hrefs below are only the fallback without JavaScript.
+    -->
+
+    <!-- Icons: drawn for this page in the 24 × 24, 2 px round-stroke style of the dashboard. -->
+    <svg class="sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-logo" viewBox="0 0 24 24">
+        <path d="M12 11.75c-1.7 0-2.8-1.05-2.8-2.45 0-1.8 1.6-2.6 2.1-4.05 1.7 1 3.5 2.3 3.5 4.05 0 1.4-1.1 2.45-2.8 2.45z" />
+        <path d="M6.5 18.75 17.5 13.25M6.5 13.25l11 5.5" />
+      </symbol>
+      <symbol id="i-xp" viewBox="0 0 24 24">
+        <path d="M3 17l6-6 4 4 8-8" />
+        <path d="M15 7h6v6" />
+      </symbol>
+      <symbol id="i-loot" viewBox="0 0 24 24">
+        <path d="M4 10h16v9H4z" />
+        <path d="M4 10l2-5h12l2 5" />
+        <path d="M12 10v3" />
+      </symbol>
+      <symbol id="i-raids" viewBox="0 0 24 24">
+        <path d="M5 4l10 10M19 4L9 14" />
+        <path d="M13 16l3-3M8 13l3 3" />
+        <path d="M17 17l3 3M7 17l-3 3" />
+      </symbol>
+      <symbol id="i-clog" viewBox="0 0 24 24">
+        <path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5z" />
+        <path d="M12 6v13" />
+      </symbol>
+      <symbol id="i-pets" viewBox="0 0 24 24">
+        <circle cx="7" cy="9" r="1.6" />
+        <circle cx="12" cy="6.5" r="1.6" />
+        <circle cx="17" cy="9" r="1.6" />
+        <path d="M12 12c-2.4 0-4.5 2.2-4.5 4.4 0 1.5 1.2 2.1 2.4 1.8 1.4-.4 2.8-.4 4.2 0 1.2.3 2.4-.3 2.4-1.8 0-2.2-2.1-4.4-4.5-4.4z" />
+      </symbol>
+      <symbol id="i-quests" viewBox="0 0 24 24">
+        <path d="M7 3h10v18l-5-3-5 3z" />
+        <path d="M10 9l1.5 1.5L14.5 7.5" />
+      </symbol>
+      <symbol id="i-bank" viewBox="0 0 24 24">
+        <path d="M3 10l9-6 9 6z" />
+        <path d="M6 10v8M10 10v8M14 10v8M18 10v8" />
+        <path d="M3 21h18" />
+      </symbol>
+      <symbol id="i-sessions" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" />
+      </symbol>
+      <symbol id="i-weekly" viewBox="0 0 24 24">
+        <rect x="3.5" y="5" width="17" height="15" rx="2" />
+        <path d="M3.5 10h17M8 3v4M16 3v4" />
+      </symbol>
+      <symbol id="i-accounts" viewBox="0 0 24 24">
+        <circle cx="9" cy="8" r="3.5" />
+        <path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" />
+        <path d="M16 4.8a3.5 3.5 0 0 1 0 6.4M18.5 14.6c1.8.9 3 2.7 3 5.4" />
+      </symbol>
+      <symbol id="i-users" viewBox="0 0 24 24">
+        <path d="M10 14l-6.5 6.5V17" />
+        <circle cx="15" cy="9" r="5.5" />
+        <circle cx="16.5" cy="7.5" r="1" />
+      </symbol>
+      <symbol id="i-themes" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 3v18" />
+        <path d="M12 7.5l6.9-1.3M12 12h9M12 16.5l6.9 1.3" />
+      </symbol>
+      <symbol id="i-plugin" viewBox="0 0 24 24">
+        <path d="M9 3v5M15 3v5" />
+        <path d="M6 8h12v4a6 6 0 0 1-12 0z" />
+        <path d="M12 18v3" />
+      </symbol>
+      <symbol id="i-server" viewBox="0 0 24 24">
+        <rect x="3.5" y="4" width="17" height="7" rx="2" />
+        <rect x="3.5" y="13" width="17" height="7" rx="2" />
+        <path d="M7.5 7.5h.01M7.5 16.5h.01" />
+      </symbol>
+      <symbol id="i-dashboard" viewBox="0 0 24 24">
+        <rect x="6.5" y="2.5" width="11" height="19" rx="2.5" />
+        <path d="M10.5 18.5h3" />
+      </symbol>
+    </svg>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="wrap header-row">
+        <a class="brand" href="#top" aria-label="Fireside, top of page">
+          <svg class="brand-mark" aria-hidden="true"><use href="#i-logo" /></svg>
+          <span>Fireside</span>
+        </a>
+        <nav aria-label="Sections">
+          <ul class="nav-list">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how-it-works">How it works</a></li>
+            <li><a href="#getting-started">Getting started</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- 1. Hero -->
+      <section class="hero" id="top">
+        <div class="wrap">
+          <svg class="hero-mark" aria-hidden="true"><use href="#i-logo" /></svg>
+          <h1>Fireside</h1>
+          <p class="lede">
+            A self-hosted tracker for Old School RuneScape: a RuneLite plugin collects your own
+            data and sends it to a dashboard on a server you run yourself.
+          </p>
+          <div class="actions">
+            <a class="btn btn-primary" data-link="server" href="https://github.com/enemyrpg/fireside">View on GitHub</a>
+            <!-- Label, look and href are set from PLUGIN_HUB_LIVE in script.js. -->
+            <a
+              class="btn btn-pending"
+              data-plugin-hub
+              href="https://github.com/enemyrpg/fireside-plugin"
+              title="The plugin is waiting for Plugin Hub approval. This opens the plugin repository."
+              >Coming soon to the Plugin Hub</a
+            >
+          </div>
+          <p class="hero-note">No central service and no telemetry. Free and open source.</p>
+        </div>
+      </section>
+
+      <!-- 2. Screenshots -->
+      <section class="section" id="screenshots" aria-labelledby="screenshots-title">
+        <div class="wrap">
+          <h2 id="screenshots-title">The dashboard on a phone</h2>
+          <p class="section-intro">
+            The dashboard works in any browser and can be added to your phone's home screen.
+          </p>
+        </div>
+        <!--
+          SCREENSHOTS: assets/screenshots/ was empty when this page was built,
+          so each frame holds a placeholder. To use a real screenshot, replace
+          the <div class="shot-placeholder">…</div> inside a frame with
+            <img src="assets/screenshots/FILE.png" alt="What the screenshot shows" loading="lazy" />
+          and rewrite the <figcaption> to match the picture.
+        -->
+        <ul class="gallery" aria-label="Screenshots of the mobile dashboard" tabindex="0">
+          <li>
+            <figure class="shot">
+              <div class="phone">
+                <div class="shot-placeholder" role="img" aria-label="Placeholder for a screenshot of the Home page">
+                  <svg aria-hidden="true"><use href="#i-logo" /></svg>
+                  <span>Screenshot coming soon</span>
+                </div>
+              </div>
+              <figcaption>Home</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="shot">
+              <div class="phone">
+                <div class="shot-placeholder" role="img" aria-label="Placeholder for a screenshot of the Sessions page">
+                  <svg aria-hidden="true"><use href="#i-sessions" /></svg>
+                  <span>Screenshot coming soon</span>
+                </div>
+              </div>
+              <figcaption>Sessions</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="shot">
+              <div class="phone">
+                <div class="shot-placeholder" role="img" aria-label="Placeholder for a screenshot of the XP page">
+                  <svg aria-hidden="true"><use href="#i-xp" /></svg>
+                  <span>Screenshot coming soon</span>
+                </div>
+              </div>
+              <figcaption>XP</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="shot">
+              <div class="phone">
+                <div class="shot-placeholder" role="img" aria-label="Placeholder for a screenshot of the Loot and KC page">
+                  <svg aria-hidden="true"><use href="#i-loot" /></svg>
+                  <span>Screenshot coming soon</span>
+                </div>
+              </div>
+              <figcaption>Loot &amp; KC</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="shot">
+              <div class="phone">
+                <div class="shot-placeholder" role="img" aria-label="Placeholder for a screenshot of the Bank page">
+                  <svg aria-hidden="true"><use href="#i-bank" /></svg>
+                  <span>Screenshot coming soon</span>
+                </div>
+              </div>
+              <figcaption>Bank</figcaption>
+            </figure>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 3. Features -->
+      <section class="section" id="features" aria-labelledby="features-title">
+        <div class="wrap">
+          <h2 id="features-title">What it tracks</h2>
+          <ul class="features">
+            <li class="feature">
+              <svg class="feature-icon" aria-hidden="true"><use href="#i-xp" /></svg>
+              <h3>XP and levels</h3>
+              <p>XP and level for every skill, recorded while you play.</p>
+            </li>
+            <li class="feature">
+              <svg class="feature-icon" aria-hidden="true"><use href="#i-loot" /></svg>
+              <h3>Loot and boss KC</h3>
+              <p>Drops with their value, kill counts, kill times and personal bests.</p>
+            </li>
+            <li class="feature">
+              <svg class="feature-icon" aria-hidden="true"><use href="#i-raids" /></svg>
+              <h3>Raids</h3>
+              <p>Raid completions and purples, for you and your team, without anyone's name.</p>
+            </li>
+            <li class="feature">
+              <svg class="feature-icon" aria-hidden="true"><use href="#i-clog" /></svg>
+              <h3>Collection log</h3>
+              <p>Synced from RuneProfile, an optional source you turn on per account.</p>
+            </li>
+            <li class="feature">
+              <svg class="feature-icon" aria-hidden="true"><use href="#i-pets" /></svg>
+              <h3>Pets</h3>
+              <p>Pet drops, with a best guess at where each one came from.</p>
+            </li>
+            <li class="feature">
+              <svg class="feature-icon" aria-hidden="true"><use href="#i-quests" /></svg>
+              <h3>Quests and diaries</h3>
+              <p>Every quest and miniquest, quest points and finished diary tiers.</p>
+            </li>
+            <li class="feature">
+              <svg class="feature-icon" aria-hidden="true"><use href="#i-bank" /></svg>
+              <h3>Bank</h3>
+              <p>Your bank as the game has it, with tabs, history and net worth.</p>
+            </li>
+            <li class="feature">
+              <svg class="feature-icon" aria-hidden="true"><use href="#i-sessions" /></svg>
+              <h3>Sessions and screen time</h3>
+              <p>Logins, world hops and AFK time, added up per day and week.</p>
+            </li>
+            <li class="feature">
+              <svg class="feature-icon" aria-hidden="true"><use href="#i-weekly" /></svg>
+              <h3>Weekly summary</h3>
+              <p>One page per week with what you did and what you gained.</p>
+            </li>
+            <li class="feature">
+              <svg class="feature-icon" aria-hidden="true"><use href="#i-accounts" /></svg>
+              <h3>Several OSRS accounts</h3>
+              <p>Look at one account at a time, or at all of them together.</p>
+            </li>
+            <li class="feature">
+              <svg class="feature-icon" aria-hidden="true"><use href="#i-users" /></svg>
+              <h3>Several users</h3>
+              <p>Invite friends with a link. Everyone sees only their own data.</p>
+            </li>
+            <li class="feature">
+              <svg class="feature-icon" aria-hidden="true"><use href="#i-themes" /></svg>
+              <h3>Themes</h3>
+              <p>
+                <span class="swatch swatch-ember" aria-hidden="true"></span>Ember,
+                <span class="swatch swatch-dark" aria-hidden="true"></span>Dark and
+                <span class="swatch swatch-light" aria-hidden="true"></span>Light.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 4. How it works -->
+      <section class="section" id="how-it-works" aria-labelledby="how-title">
+        <div class="wrap">
+          <h2 id="how-title">How it works</h2>
+          <ol class="flow">
+            <li class="flow-step">
+              <svg class="flow-icon" aria-hidden="true"><use href="#i-plugin" /></svg>
+              <h3>RuneLite plugin</h3>
+              <p>
+                Collects data about your own accounts while you play. It sends nothing until you
+                enter a server URL and an API key and turn on <strong>Send data</strong>.
+              </p>
+            </li>
+            <li class="flow-step">
+              <svg class="flow-icon" aria-hidden="true"><use href="#i-server" /></svg>
+              <h3>Your own server</h3>
+              <p>
+                One Docker container with a SQLite database, run by you or by a friend you trust.
+                Your data is stored in its database.
+              </p>
+            </li>
+            <li class="flow-step">
+              <svg class="flow-icon" aria-hidden="true"><use href="#i-dashboard" /></svg>
+              <h3>Dashboard</h3>
+              <p>
+                The same server shows your data in the browser, on a computer or on your phone,
+                behind your own login.
+              </p>
+            </li>
+          </ol>
+          <ul class="facts">
+            <li>There is no central Fireside service. The plugin talks to the server URL you enter, and to nothing else.</li>
+            <li>Other players' names, the text of chat messages and your Jagex login are never sent.</li>
+            <li>Events wait in a queue on disk until the server confirms them, so nothing is lost while it is down.</li>
+            <li>The server backs up its database every day and makes no outside calls unless you turn one on.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 5. Getting started -->
+      <section class="section" id="getting-started" aria-labelledby="start-title">
+        <div class="wrap">
+          <h2 id="start-title">Getting started</h2>
+
+          <!-- Without JavaScript both guides are shown one after the other. -->
+          <div class="tabs" role="tablist" aria-label="Who are you?" hidden>
+            <button type="button" role="tab" id="tab-players" aria-controls="panel-players" aria-selected="true">
+              For players
+            </button>
+            <button type="button" role="tab" id="tab-admins" aria-controls="panel-admins" aria-selected="false" tabindex="-1">
+              For server admins
+            </button>
+          </div>
+
+          <div class="panel" id="panel-players" role="tabpanel" aria-labelledby="tab-players">
+            <h3 class="panel-title">For players</h3>
+            <p class="panel-intro">
+              You need access to a Fireside server: your own, or one a friend runs.
+            </p>
+            <ol class="steps">
+              <li>
+                <h4>Get an invite link</h4>
+                <p>Ask the admin of the server for an invite link. A link works once.</p>
+              </li>
+              <li>
+                <h4>Create your user</h4>
+                <p>
+                  Open the link in a browser and pick a username and a password. Turning on
+                  two-factor authentication under <strong>Settings → Profile</strong> is a good idea.
+                </p>
+              </li>
+              <li>
+                <h4>Create an API key</h4>
+                <p>
+                  In the dashboard, go to <strong>Settings → API keys</strong>. If the admin has not
+                  allowed that for your user, they create the key for you.
+                </p>
+              </li>
+              <li>
+                <h4>Install the plugin</h4>
+                <p>
+                  In RuneLite, open the wrench icon → <strong>Plugin Hub</strong> and search for
+                  “Fireside”.
+                  <span class="pending-note" data-plugin-hub-note>
+                    The plugin is not on the Plugin Hub yet. Until it is approved, see the
+                    <a data-link="plugin" href="https://github.com/enemyrpg/fireside-plugin">plugin repository</a>.
+                  </span>
+                </p>
+              </li>
+              <li>
+                <h4>Connect the plugin to the server</h4>
+                <p>
+                  In the plugin's settings, enter the server's address as <strong>Server URL</strong>
+                  (without <code>/api/v1</code>), paste your <strong>API key</strong> and turn on
+                  <strong>Send data</strong>.
+                </p>
+                <div class="code">
+                  <div class="code-head"><span>Server URL (example)</span></div>
+                  <pre><code>https://fireside.example.com</code></pre>
+                </div>
+                <p>
+                  Then open the plugin's side panel and press <strong>Test connection</strong>. It
+                  should say <strong>Connected</strong>.
+                </p>
+              </li>
+            </ol>
+          </div>
+
+          <div class="panel" id="panel-admins" role="tabpanel" aria-labelledby="tab-admins">
+            <h3 class="panel-title">For server admins</h3>
+            <p class="panel-intro">
+              This is the short version. The details are in the
+              <a data-link="docs" href="https://github.com/enemyrpg/fireside#self-hosting">README</a>
+              and the
+              <a data-link="tunnel" href="https://github.com/enemyrpg/fireside/blob/main/docs/tunnel.md">remote access guide</a>.
+            </p>
+            <ol class="steps">
+              <li>
+                <h4>Requirements</h4>
+                <ul class="plain">
+                  <li>Linux with Docker Engine (rootful) and the Compose plugin. Rootless Docker is not supported.</li>
+                  <li>For access from outside your own machine: a domain on Cloudflare. The free plan is enough.</li>
+                </ul>
+              </li>
+              <li>
+                <h4>Install with Docker</h4>
+                <div class="code">
+                  <div class="code-head"><span>Shell</span></div>
+                  <pre><code>git clone https://github.com/enemyrpg/fireside.git
+cd fireside
+mkdir -p data
+docker compose up -d --build
+docker compose ps</code></pre>
+                </div>
+                <p>
+                  After a few seconds the status is <code>healthy</code>, and the dashboard answers
+                  on <code>http://127.0.0.1:3100</code>, on that machine only.
+                </p>
+              </li>
+              <li>
+                <h4>Create the first admin user</h4>
+                <p>
+                  A new server has no login. Setting a password for the built-in
+                  <code>admin</code> user turns login on. The command asks for the password, at
+                  least 12 characters.
+                </p>
+                <div class="code">
+                  <div class="code-head"><span>Shell</span></div>
+                  <pre><code>docker compose exec fireside fireside users set-password admin
+docker compose exec fireside fireside users rename admin &lt;name&gt;</code></pre>
+                </div>
+                <p>
+                  Log in and turn on two-factor authentication under
+                  <strong>Settings → Profile</strong>.
+                </p>
+              </li>
+              <li>
+                <h4>Make it reachable</h4>
+                <p>
+                  For phones and friends' plugins, Fireside goes behind Cloudflare Tunnel: no open
+                  ports, and the server keeps listening on <code>127.0.0.1</code>. After creating
+                  the tunnel and saving its token as the guide describes, add this to
+                  <code>.env</code> and run <code>docker compose up -d</code>:
+                </p>
+                <div class="code">
+                  <div class="code-head"><span>.env</span></div>
+                  <pre><code>PUBLIC_URL=https://fireside.example.com
+TRUSTED_PROXY=cloudflare
+COMPOSE_PROFILES=tunnel</code></pre>
+                </div>
+                <p>
+                  The tunnel, its token and the Cloudflare settings are covered step by step in the
+                  <a data-link="tunnel" href="https://github.com/enemyrpg/fireside/blob/main/docs/tunnel.md">remote access guide</a>.
+                </p>
+              </li>
+              <li>
+                <h4>Invite people</h4>
+                <p>
+                  First write who runs the server under
+                  <strong>Settings → Server → Instance text</strong>. Then go to
+                  <strong>Settings → Users → Create invite</strong>, choose how long the link works
+                  and whether the person may create their own API keys, and send them the link.
+                </p>
+              </li>
+              <li>
+                <h4>Manage API keys</h4>
+                <p>
+                  Your own keys are under <strong>Settings → API keys</strong>, other users' keys
+                  under <strong>Settings → Users</strong>. The command line does the same:
+                </p>
+                <div class="code">
+                  <div class="code-head"><span>Shell</span></div>
+                  <pre><code>docker compose exec fireside fireside keys create "Gaming PC"
+docker compose exec fireside fireside keys list
+docker compose exec fireside fireside keys revoke 2</code></pre>
+                </div>
+              </li>
+              <li>
+                <h4>Update</h4>
+                <div class="code">
+                  <div class="code-head"><span>Shell</span></div>
+                  <pre><code>git pull
+docker compose pull --ignore-buildable
+docker compose up -d --build</code></pre>
+                </div>
+                <p>
+                  The server backs up its database daily to <code>data/backups</code>. Copy that
+                  folder to another disk or machine as well.
+                </p>
+              </li>
+            </ol>
+            <p class="panel-outro">
+              <a data-link="docs" href="https://github.com/enemyrpg/fireside#self-hosting">Read the full documentation on GitHub</a>
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 6. Footer -->
+    <footer class="site-footer">
+      <div class="wrap footer-grid">
+        <div>
+          <p class="footer-brand">
+            <svg class="brand-mark" aria-hidden="true"><use href="#i-logo" /></svg>
+            <span>Fireside</span>
+          </p>
+          <p>Made by EnemyRPG</p>
+        </div>
+        <ul class="footer-links">
+          <li>
+            <a data-link="server" href="https://github.com/enemyrpg/fireside">Server and dashboard</a>
+            <span class="license">MIT license</span>
+          </li>
+          <li>
+            <a data-link="plugin" href="https://github.com/enemyrpg/fireside-plugin">RuneLite plugin</a>
+            <span class="license">BSD 2-Clause license</span>
+          </li>
+        </ul>
+        <p class="disclaimer">
+          Fireside is not affiliated with or endorsed by Jagex or RuneLite. Old School RuneScape is
+          a trademark of Jagex Limited.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
