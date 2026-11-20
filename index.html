@@ -29,9 +29,13 @@
 
     <!-- Icons: drawn for this page in the 24 × 24, 2 px round-stroke style of the dashboard. -->
     <svg class="sprite" aria-hidden="true" focusable="false">
-      <symbol id="i-logo" viewBox="0 0 24 24">
-        <path d="M12 11.75c-1.7 0-2.8-1.05-2.8-2.45 0-1.8 1.6-2.6 2.1-4.05 1.7 1 3.5 2.3 3.5 4.05 0 1.4-1.1 2.45-2.8 2.45z" />
-        <path d="M6.5 18.75 17.5 13.25M6.5 13.25l11 5.5" />
+      <!-- The full logo, as assets/logo/fireside.svg in the server repo: dark flame on the accent colour. -->
+      <symbol id="i-logo-full" viewBox="0 0 24 24">
+        <rect width="24" height="24" rx="5" fill="#f0803c" stroke="none" />
+        <g stroke="#1a1009">
+          <path d="M12 11.75c-1.7 0-2.8-1.05-2.8-2.45 0-1.8 1.6-2.6 2.1-4.05 1.7 1 3.5 2.3 3.5 4.05 0 1.4-1.1 2.45-2.8 2.45z" />
+          <path d="M6.5 18.75 17.5 13.25M6.5 13.25l11 5.5" />
+        </g>
       </symbol>
       <symbol id="i-xp" viewBox="0 0 24 24">
         <path d="M3 17l6-6 4 4 8-8" />
@@ -110,7 +114,7 @@
     <header class="site-header">
       <div class="wrap header-row">
         <a class="brand" href="#top" aria-label="Fireside, top of page">
-          <svg class="brand-mark" aria-hidden="true"><use href="#i-logo" /></svg>
+          <svg class="brand-mark" aria-hidden="true"><use href="#i-logo-full" /></svg>
           <span>Fireside</span>
         </a>
         <nav aria-label="Sections">
@@ -126,8 +130,18 @@
     <main id="main">
       <!-- 1. Hero -->
       <section class="hero" id="top">
-        <div class="wrap">
-          <svg class="hero-mark" aria-hidden="true"><use href="#i-logo" /></svg>
+        <div class="wrap hero-grid">
+          <div class="phone hero-phone">
+            <img
+              src="assets/screenshots/home-282.png"
+              srcset="assets/screenshots/home-282.png 282w, assets/screenshots/home-564.png 564w, assets/screenshots/home.png 780w"
+              sizes="282px"
+              width="780"
+              height="1688"
+              alt="The Fireside dashboard on a phone. The Home page shows hours played this week with XP, loot and kills, a list of the latest session, drops and level, and net worth."
+            />
+          </div>
+          <div class="hero-text">
           <h1>Fireside</h1>
           <p class="lede">
             A self-hosted tracker for Old School RuneScape: a RuneLite plugin collects your own
@@ -141,82 +155,58 @@
               data-plugin-hub
               href="https://github.com/enemyrpg/fireside-plugin"
               title="The plugin is waiting for Plugin Hub approval. This opens the plugin repository."
-              >Coming soon to the Plugin Hub</a
+              >Awaiting Plugin Hub approval</a
             >
           </div>
           <p class="hero-note">No central service and no telemetry. Free and open source.</p>
+          </div>
         </div>
       </section>
 
       <!-- 2. Screenshots -->
       <section class="section" id="screenshots" aria-labelledby="screenshots-title">
         <div class="wrap">
-          <h2 id="screenshots-title">The dashboard on a phone</h2>
+          <h2 id="screenshots-title">Around the dashboard</h2>
           <p class="section-intro">
-            The dashboard works in any browser and can be added to your phone's home screen.
+            It works in any browser, and you can add it to your phone's home screen.
           </p>
         </div>
         <!--
-          SCREENSHOTS: assets/screenshots/ was empty when this page was built,
-          so each frame holds a placeholder. To use a real screenshot, replace
-          the <div class="shot-placeholder">…</div> inside a frame with
-            <img src="assets/screenshots/FILE.png" alt="What the screenshot shows" loading="lazy" />
-          and rewrite the <figcaption> to match the picture.
+          Screenshots: NAME.png is the 780 × 1688 original. NAME-282.png and NAME-564.png are
+          copies scaled to the size the frame shows them (1× and 2× screens); the README
+          has the command that makes them. Keep alt and caption true to the picture.
         -->
         <ul class="gallery" aria-label="Screenshots of the mobile dashboard" tabindex="0">
           <li>
             <figure class="shot">
               <div class="phone">
-                <div class="shot-placeholder" role="img" aria-label="Placeholder for a screenshot of the Home page">
-                  <svg aria-hidden="true"><use href="#i-logo" /></svg>
-                  <span>Screenshot coming soon</span>
-                </div>
+                <img src="assets/screenshots/sessions-282.png" srcset="assets/screenshots/sessions-282.png 282w, assets/screenshots/sessions-564.png 564w, assets/screenshots/sessions.png 780w" sizes="282px" width="780" height="1688" alt="The Sessions tab under Activity: sessions grouped by day, each with its time, world, what was done and how long it lasted." loading="lazy" />
               </div>
-              <figcaption>Home</figcaption>
+              <figcaption>Sessions: every session by day, with what you did in it.</figcaption>
             </figure>
           </li>
           <li>
             <figure class="shot">
               <div class="phone">
-                <div class="shot-placeholder" role="img" aria-label="Placeholder for a screenshot of the Sessions page">
-                  <svg aria-hidden="true"><use href="#i-sessions" /></svg>
-                  <span>Screenshot coming soon</span>
-                </div>
+                <img src="assets/screenshots/xp-282.png" srcset="assets/screenshots/xp-282.png 282w, assets/screenshots/xp-564.png 564w, assets/screenshots/xp.png 780w" sizes="282px" width="780" height="1688" alt="The XP tab under Progress: XP gained since Monday, a chart of XP over time and a table of gains per skill." loading="lazy" />
               </div>
-              <figcaption>Sessions</figcaption>
+              <figcaption>XP: the week’s gains, overall and per skill.</figcaption>
             </figure>
           </li>
           <li>
             <figure class="shot">
               <div class="phone">
-                <div class="shot-placeholder" role="img" aria-label="Placeholder for a screenshot of the XP page">
-                  <svg aria-hidden="true"><use href="#i-xp" /></svg>
-                  <span>Screenshot coming soon</span>
-                </div>
+                <img src="assets/screenshots/loot-kc-282.png" srcset="assets/screenshots/loot-kc-282.png 282w, assets/screenshots/loot-kc-564.png 564w, assets/screenshots/loot-kc.png 780w" sizes="282px" width="780" height="1688" alt="The Loot and KC tab under Progress: loot value for the last 7 days, loot by source and a table of boss kill counts." loading="lazy" />
               </div>
-              <figcaption>XP</figcaption>
+              <figcaption>Loot and KC: loot value by source, and boss kill counts.</figcaption>
             </figure>
           </li>
           <li>
             <figure class="shot">
               <div class="phone">
-                <div class="shot-placeholder" role="img" aria-label="Placeholder for a screenshot of the Loot and KC page">
-                  <svg aria-hidden="true"><use href="#i-loot" /></svg>
-                  <span>Screenshot coming soon</span>
-                </div>
+                <img src="assets/screenshots/bank-282.png" srcset="assets/screenshots/bank-282.png 282w, assets/screenshots/bank-564.png 564w, assets/screenshots/bank.png 780w" sizes="282px" width="780" height="1688" alt="The Bank page: net worth with cash, bank and carried value, a search field, bank tabs and a grid of items with quantities." loading="lazy" />
               </div>
-              <figcaption>Loot &amp; KC</figcaption>
-            </figure>
-          </li>
-          <li>
-            <figure class="shot">
-              <div class="phone">
-                <div class="shot-placeholder" role="img" aria-label="Placeholder for a screenshot of the Bank page">
-                  <svg aria-hidden="true"><use href="#i-bank" /></svg>
-                  <span>Screenshot coming soon</span>
-                </div>
-              </div>
-              <figcaption>Bank</figcaption>
+              <figcaption>Bank: net worth and every tab, with search.</figcaption>
             </figure>
           </li>
         </ul>
@@ -224,7 +214,7 @@
 
       <!-- 3. Features -->
       <section class="section" id="features" aria-labelledby="features-title">
-        <div class="wrap">
+        <div class="wrap split">
           <h2 id="features-title">What it tracks</h2>
           <ul class="features">
             <li class="feature">
@@ -297,8 +287,9 @@
 
       <!-- 4. How it works -->
       <section class="section" id="how-it-works" aria-labelledby="how-title">
-        <div class="wrap">
+        <div class="wrap split">
           <h2 id="how-title">How it works</h2>
+          <div>
           <ol class="flow">
             <li class="flow-step">
               <svg class="flow-icon" aria-hidden="true"><use href="#i-plugin" /></svg>
@@ -331,13 +322,15 @@
             <li>Events wait in a queue on disk until the server confirms them, so nothing is lost while it is down.</li>
             <li>The server backs up its database every day and makes no outside calls unless you turn one on.</li>
           </ul>
+          </div>
         </div>
       </section>
 
       <!-- 5. Getting started -->
       <section class="section" id="getting-started" aria-labelledby="start-title">
-        <div class="wrap">
+        <div class="wrap split">
           <h2 id="start-title">Getting started</h2>
+          <div>
 
           <!-- Without JavaScript both guides are shown one after the other. -->
           <div class="tabs" role="tablist" aria-label="Who are you?" hidden>
@@ -510,6 +503,7 @@ docker compose up -d --build</code></pre>
               <a data-link="docs" href="https://github.com/enemyrpg/fireside#self-hosting">Read the full documentation on GitHub</a>
             </p>
           </div>
+          </div>
         </div>
       </section>
     </main>
@@ -519,7 +513,7 @@ docker compose up -d --build</code></pre>
       <div class="wrap footer-grid">
         <div>
           <p class="footer-brand">
-            <svg class="brand-mark" aria-hidden="true"><use href="#i-logo" /></svg>
+            <svg class="brand-mark" aria-hidden="true"><use href="#i-logo-full" /></svg>
             <span>Fireside</span>
           </p>
           <p>Made by EnemyRPG</p>

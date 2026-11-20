@@ -1,4 +1,36 @@
 /*
+ * Fonts: the three families the Fireside dashboard uses, served from this
+ * repo (assets/fonts, SIL Open Font License, see LICENSES.txt there).
+ */
+@font-face {
+  font-family: 'Inter';
+  src: url('assets/fonts/inter-latin-wght.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('assets/fonts/space-grotesk-latin-500.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('assets/fonts/space-grotesk-latin-700.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('assets/fonts/jetbrains-mono-latin-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+/*
  * Colours: the Ember theme of the Fireside dashboard, copied from
  * web/src/theme/themes.css in the server repo ([data-theme='ember']).
  * Keep the two in step if the theme changes.
@@ -24,11 +56,14 @@
   --theme-dark: #181927;
   --theme-light: #d8ccb4;
 
-  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
-  --radius: 10px;
+  --font: 'Inter', system-ui, sans-serif;
+  --display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  --radius: 8px;
   --gutter: 20px;
-  --max: 1080px;
+  --max: 1120px;
+  /* Width of the heading column beside each section on a wide screen. */
+  --aside: 300px;
 }
 
 *,
@@ -49,7 +84,7 @@ body {
   color: var(--text);
   font-family: var(--font);
   font-size: 16px;
-  line-height: 1.55;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -120,7 +155,7 @@ svg {
   padding: 10px 14px;
   background: var(--accent);
   color: var(--on-accent);
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-weight: 600;
   text-decoration: none;
 }
@@ -154,8 +189,10 @@ svg {
   align-items: center;
   gap: 8px;
   color: var(--text);
-  font-weight: 650;
-  font-size: 17px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.01em;
   text-decoration: none;
 }
 
@@ -168,51 +205,63 @@ svg {
 .nav-list {
   display: none;
   gap: 4px;
+  margin-right: -12px;
 }
 
 .nav-list a {
   display: block;
   padding: 8px 12px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   color: var(--text-2);
   font-size: 15px;
   text-decoration: none;
-  transition:
-    background-color 0.15s,
-    color 0.15s;
 }
 
 .nav-list a:hover {
-  background: var(--hover);
   color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
 }
 
 /* Hero */
 
 .hero {
-  padding-block: 56px 48px;
+  padding-block: 48px 56px;
 }
 
-.hero-mark {
-  width: 56px;
-  height: 56px;
-  color: var(--accent);
-  stroke-width: 1.6;
+.hero-grid {
+  display: grid;
+}
+
+/*
+ * The dashboard's Home page in a phone: under the text on a narrow screen,
+ * beside it on a wide one. The glow is firelight in the accent colour.
+ */
+.hero-phone {
+  order: 2;
+  width: min(78vw, 300px);
+  margin: 48px auto 0;
+  box-shadow:
+    var(--shadow),
+    0 0 140px rgba(240, 128, 60, 0.16);
 }
 
 h1 {
-  margin-top: 12px;
-  font-size: clamp(44px, 12vw, 76px);
-  line-height: 1.02;
+  margin-left: -0.04em;
+  font-family: var(--display);
+  font-size: clamp(64px, 21vw, 168px);
+  line-height: 0.9;
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.055em;
 }
 
 .lede {
-  max-width: 34em;
-  margin-top: 20px;
+  max-width: 31em;
+  margin-top: 28px;
   color: var(--text-2);
-  font-size: clamp(18px, 4.6vw, 21px);
+  font-size: clamp(18px, 4.6vw, 22px);
   line-height: 1.5;
 }
 
@@ -228,7 +277,7 @@ h1 {
   align-items: center;
   justify-content: center;
   min-height: 48px;
-  padding: 10px 20px;
+  padding: 10px 22px;
   border: 1px solid transparent;
   border-radius: var(--radius);
   font-size: 16px;
@@ -238,8 +287,7 @@ h1 {
   transition:
     background-color 0.15s,
     border-color 0.15s,
-    color 0.15s,
-    transform 0.1s;
+    color 0.15s;
 }
 
 .btn:active {
@@ -257,14 +305,13 @@ h1 {
 }
 
 .btn-secondary {
-  background: var(--raised);
-  border-color: var(--border-strong);
+  border-color: var(--text-3);
   color: var(--text);
 }
 
 .btn-secondary:hover {
   background: var(--hover);
-  border-color: var(--text-3);
+  border-color: var(--text);
 }
 
 /* The Plugin Hub button before approval: reads as not available yet. */
@@ -288,19 +335,24 @@ h1 {
 /* Sections */
 
 .section {
-  padding-block: 48px;
+  padding-block: 56px;
   border-top: 1px solid var(--border);
 }
 
 h2 {
-  font-size: clamp(26px, 6vw, 34px);
-  line-height: 1.15;
-  font-weight: 650;
-  letter-spacing: -0.02em;
+  font-family: var(--display);
+  font-size: clamp(28px, 6.4vw, 36px);
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+.split > h2 {
+  margin-bottom: 28px;
 }
 
 .section-intro {
-  max-width: 38em;
+  max-width: 34em;
   margin-top: 10px;
   color: var(--text-2);
 }
@@ -309,12 +361,14 @@ h2 {
 
 .gallery {
   display: flex;
-  gap: 20px;
+  gap: 24px;
   margin-top: 28px;
-  padding: 4px var(--gutter) 16px;
+  /* Starts on the page's content edge and runs off the right side of the screen. */
+  --edge: max(var(--gutter), calc((100vw - var(--max)) / 2));
+  padding: 4px var(--edge) 20px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--gutter);
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--edge);
   scrollbar-width: thin;
   scrollbar-color: var(--border-strong) transparent;
   -webkit-overflow-scrolling: touch;
@@ -322,85 +376,59 @@ h2 {
 
 .gallery > li {
   flex: 0 0 auto;
-  width: min(62vw, 232px);
+  /* Wide enough that the text in a 390 px screenshot stays readable. */
+  width: min(78vw, 300px);
   scroll-snap-align: start;
 }
 
 .phone {
-  aspect-ratio: 9 / 19.5;
-  padding: 7px;
+  padding: 8px;
   background: var(--raised);
   border: 1px solid var(--border-strong);
-  border-radius: 30px;
+  border-radius: 38px;
   box-shadow: var(--shadow);
 }
 
-.phone > img,
-.shot-placeholder {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: 23px;
-}
-
 .phone > img {
-  object-fit: cover;
-  object-position: top;
+  display: block;
+  /* The frame takes the picture's own shape, so the picture is never cropped or stretched. */
+  width: 100%;
+  height: auto;
+  border-radius: 30px;
   background: var(--page);
-}
-
-.shot-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 16px;
-  background: var(--page);
-  border: 1px dashed var(--border-strong);
-  color: var(--text-3);
-  font-size: 13px;
-  text-align: center;
-}
-
-.shot-placeholder svg {
-  width: 36px;
-  height: 36px;
-  stroke-width: 1.6;
 }
 
 .shot figcaption {
-  margin-top: 12px;
+  margin-top: 14px;
+  padding-inline: 4px;
   color: var(--text-2);
   font-size: 14px;
-  text-align: center;
+  line-height: 1.45;
 }
 
-/* Features */
+/* Features: a plain list under hairlines, not cards. */
 
 .features {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
-  margin-top: 28px;
+  column-gap: 40px;
 }
 
 .feature {
   display: grid;
-  grid-template-columns: 24px 1fr;
+  grid-template-columns: 22px 1fr;
   column-gap: 14px;
   row-gap: 2px;
-  padding: 16px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  align-content: start;
+  padding-block: 16px;
+  border-top: 1px solid var(--border);
 }
 
 .feature-icon {
   grid-row: span 2;
-  width: 24px;
-  height: 24px;
-  margin-top: 1px;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
   color: var(--accent);
 }
 
@@ -413,6 +441,7 @@ h2 {
   grid-column: 2;
   color: var(--text-2);
   font-size: 15px;
+  line-height: 1.5;
 }
 
 .swatch {
@@ -436,46 +465,53 @@ h2 {
   background: var(--theme-light);
 }
 
-/* How it works */
+/*
+ * How it works: three stops on one line, the way the data travels. The line
+ * runs down the left on a phone and across the top on a wide screen.
+ */
 
 .flow {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 36px;
-  margin-top: 28px;
 }
 
 .flow-step {
   position: relative;
-  padding: 20px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  margin-left: 6px;
+  padding: 0 0 32px 28px;
+  border-left: 2px solid var(--border-strong);
 }
 
-/* The arrow from one step to the next: down on a phone, right on a wide screen. */
-.flow-step:not(:last-child)::after {
+.flow-step:last-child {
+  padding-bottom: 0;
+  border-left-color: transparent;
+}
+
+.flow-step::before {
   content: '';
   position: absolute;
-  left: 50%;
-  bottom: -25px;
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid var(--accent);
-  border-bottom: 2px solid var(--accent);
-  transform: translateX(-50%) rotate(45deg);
+  left: -7px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--page);
 }
 
 .flow-icon {
-  width: 28px;
-  height: 28px;
-  color: var(--accent);
+  display: block;
+  width: 26px;
+  height: 26px;
+  color: var(--text-3);
 }
 
 .flow-step h3 {
   margin-top: 10px;
-  font-size: 18px;
-  font-weight: 600;
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .flow-step p {
@@ -487,8 +523,8 @@ h2 {
 .facts {
   display: grid;
   gap: 10px;
-  max-width: 46em;
-  margin-top: 28px;
+  max-width: 40em;
+  margin-top: 40px;
   color: var(--text-2);
 }
 
@@ -501,10 +537,10 @@ h2 {
   content: '';
   position: absolute;
   left: 2px;
-  top: 0.62em;
+  top: 0.68em;
   width: 6px;
   height: 6px;
-  border-radius: 50%;
+  border-radius: 1px;
   background: var(--accent);
 }
 
@@ -512,12 +548,8 @@ h2 {
 
 .tabs {
   display: flex;
-  gap: 4px;
-  margin-top: 24px;
-  padding: 4px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  gap: 24px;
+  border-bottom: 1px solid var(--border);
 }
 
 .tabs[hidden] {
@@ -525,20 +557,17 @@ h2 {
 }
 
 .tabs button {
-  flex: 1;
   min-height: 44px;
-  padding: 8px 12px;
+  margin-bottom: -1px;
+  padding: 8px 0;
   background: none;
   border: 0;
-  border-radius: 7px;
-  color: var(--text-2);
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  color: var(--text-3);
   font: inherit;
-  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition:
-    background-color 0.15s,
-    color 0.15s;
 }
 
 .tabs button:hover {
@@ -546,13 +575,20 @@ h2 {
 }
 
 .tabs button[aria-selected='true'] {
-  background: var(--accent);
-  color: var(--on-accent);
+  border-bottom-color: var(--accent);
+  color: var(--text);
 }
 
 .panel {
-  max-width: 46em;
-  margin-top: 32px;
+  max-width: 44em;
+}
+
+.panel + .panel {
+  margin-top: 48px;
+}
+
+.has-tabs .panel {
+  margin-top: 28px;
 }
 
 .panel[hidden] {
@@ -560,8 +596,9 @@ h2 {
 }
 
 .panel-title {
-  font-size: 21px;
-  font-weight: 650;
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 500;
 }
 
 /* With tabs, the tab itself is the panel's heading. */
@@ -586,32 +623,27 @@ h2 {
 .steps {
   counter-reset: step;
   display: grid;
-  gap: 28px;
-  margin-top: 28px;
+  gap: 32px;
+  margin-top: 32px;
 }
 
 .steps > li {
   counter-increment: step;
   position: relative;
   min-width: 0;
-  padding-left: 44px;
+  padding-left: 40px;
 }
 
 .steps > li::before {
   content: counter(step);
   position: absolute;
   left: 0;
-  top: -2px;
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  background: var(--accent-wash);
-  border: 1px solid var(--border-strong);
-  border-radius: 50%;
-  color: var(--accent-text);
-  font-size: 14px;
-  font-weight: 650;
+  top: -3px;
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
   font-variant-numeric: tabular-nums;
 }
 
@@ -639,24 +671,21 @@ h2 {
 
 .pending-note {
   display: block;
-  margin-top: 8px;
-  padding: 10px 12px;
-  background: var(--accent-wash);
-  border: 1px solid var(--border-strong);
-  border-radius: 8px;
+  margin-top: 10px;
+  padding: 2px 0 2px 14px;
+  border-left: 2px solid var(--accent);
   font-size: 15px;
 }
 
 code {
   font-family: var(--mono);
-  font-size: 0.9em;
+  font-size: 0.875em;
 }
 
 :not(pre) > code {
   padding: 1px 5px;
   background: var(--raised);
-  border: 1px solid var(--border);
-  border-radius: 5px;
+  border-radius: 4px;
   color: var(--text);
   overflow-wrap: anywhere;
 }
@@ -685,20 +714,17 @@ code {
   min-width: 64px;
   min-height: 30px;
   padding: 4px 10px;
-  background: var(--raised);
+  background: none;
   border: 1px solid var(--border-strong);
-  border-radius: 6px;
+  border-radius: 5px;
   color: var(--text-2);
   font: inherit;
   font-size: 13px;
   cursor: pointer;
-  transition:
-    background-color 0.15s,
-    color 0.15s;
 }
 
 .copy:hover {
-  background: var(--hover);
+  border-color: var(--text-3);
   color: var(--text);
 }
 
@@ -706,21 +732,21 @@ code {
   padding: 14px;
   overflow-x: auto;
   color: var(--text);
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 13.5px;
+  line-height: 1.7;
   scrollbar-width: thin;
   scrollbar-color: var(--border-strong) transparent;
 }
 
 .panel-outro {
-  margin-top: 32px;
+  margin-top: 36px;
   font-weight: 600;
 }
 
 /* Footer */
 
 .site-footer {
-  padding-block: 36px 48px;
+  padding-block: 40px 56px;
   border-top: 1px solid var(--border);
   color: var(--text-2);
   font-size: 15px;
@@ -753,7 +779,7 @@ code {
 }
 
 .disclaimer {
-  max-width: 46em;
+  max-width: 44em;
   color: var(--text-3);
   font-size: 14px;
 }
@@ -769,15 +795,6 @@ code {
   .features {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  .tabs {
-    display: inline-flex;
-  }
-
-  .tabs button {
-    flex: 0 0 auto;
-    padding-inline: 20px;
-  }
 }
 
 @media (min-width: 720px) {
@@ -790,52 +807,77 @@ code {
   }
 
   .hero {
-    padding-block: 96px 80px;
+    padding-block: 72px 80px;
   }
 
   .section {
-    padding-block: 72px;
-  }
-}
-
-@media (min-width: 900px) {
-  .features {
-    grid-template-columns: repeat(3, 1fr);
+    padding-block: 80px;
   }
 
   .flow {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .flow-step:not(:last-child)::after {
-    left: auto;
-    right: -23px;
-    top: 50%;
-    bottom: auto;
-    transform: translateY(-50%) rotate(-45deg);
+  .flow-step {
+    margin-left: 0;
+    padding: 28px 28px 0 0;
+    border-left: 0;
+    border-top: 2px solid var(--border-strong);
   }
 
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
+  .flow-step:last-child {
+    border-top-color: var(--border-strong);
   }
 
-  .disclaimer {
-    grid-column: 1 / -1;
+  .flow-step::before {
+    left: 0;
+    top: -7px;
   }
 }
 
-/* Once all five phones fit, the gallery lines up with the page's content edges. */
-@media (min-width: 1144px) {
+/* Heading in a column of its own, content beside it. */
+@media (min-width: 980px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 64px;
+  }
+
+  .hero-phone {
+    margin: 0;
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: var(--aside) minmax(0, 1fr);
+  }
+
+  .split > h2 {
+    margin-bottom: 0;
+  }
+
+  .footer-grid {
+    grid-template-columns: var(--aside) 1fr;
+  }
+
+  .disclaimer {
+    grid-column: 2;
+  }
+}
+
+/*
+ * Wide enough for the four screenshots side by side at a readable size: the
+ * row stops scrolling and sits centred, a little wider than the text column.
+ */
+@media (min-width: 1200px) {
   .gallery {
-    justify-content: space-between;
-    gap: 0;
-    max-width: calc(var(--max) + 2 * var(--gutter));
-    margin-inline: auto;
+    justify-content: center;
+    padding-inline: var(--gutter);
     overflow-x: visible;
   }
 
   .gallery > li {
-    width: 196px;
+    width: min(300px, calc((100vw - 2 * var(--gutter) - 72px) / 4));
   }
 }
 
